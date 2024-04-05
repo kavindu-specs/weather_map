@@ -14,25 +14,7 @@ function Map() {
     const [weatherData, setWeatherData] = useState(null);
     const [error, setError] = useState(null);
 
-    const [reloadCounter, setReloadCounter] = useState(0);
 
-    // useEffect(() => {
-    //     const intervalId = setInterval(() => {
-    //         // Increment the reload counter every 30 seconds
-    //         setReloadCounter(prevCounter => prevCounter + 1);
-    //     }, 30000);
-
-    //     return () => clearInterval(intervalId); // Cleanup function to clear interval on unmount
-    // }, []);
-
-    // useEffect(() => {
-    //     if (reloadCounter > 0) {
-    //         // Reload the app after 30 seconds
-    //         setTimeout(() => {
-    //             window.location.reload();
-    //         }, 30000);
-    //     }
-    // }, [reloadCounter]);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -52,8 +34,9 @@ function Map() {
                 }
             }
             );
-           // console.log(response2)
+           
             const responseData = await response2.json();
+            console.log(responseData)
             setWeatherData(responseData)
 
            }catch(err){
@@ -82,9 +65,9 @@ function Map() {
 
         let matchedData= []
         if (error) {
-            //return <div>Error: {error.message}</div>;
+            return <div>Error: {error.message}</div>;
         } else if (!topology || !weatherData) {
-            // return <div>Loading...</div>;
+             return <div>Loading...</div>;
         } else {
             matchedData = codes.map(code => {
                 const matchedItem = weatherData.data.find(item => item.cityId.highCode === code);
@@ -97,11 +80,11 @@ function Map() {
                          matchedItem.humidity
                     ];
                 } else {
-                    return []; // Handle cases where weather data is not found
+                    return []; 
                 }
             });
             
-         } // Update data array with weatherData responses
+         }
     
     
    
@@ -146,9 +129,9 @@ function Map() {
                   var hoverVotes = this.hoverVotes; 
                   return '<b>'+this.name+'</b><br/>' +
                     Highcharts.map([
-                      ['Temperature', this.temperature],
-                      ['Air Pressure', this.airPressure],
-                      ['Humidity', this.humidity]
+                      ['Temperature (C)', this.temperature],
+                      ['Air Pressure (hPa)', this.airPressure],
+                      ['Humidity (%)', this.humidity]
         
                     ], function(line) {
                       return '<span style="color:' + line[2] +
@@ -156,7 +139,7 @@ function Map() {
                         '">\u25CF</span> ' +
                         // Party and votes
                         (line[0] === hoverVotes ? '<b>' : '') +
-                        line[0] + ': ' +
+                        line[0] + ' : ' +
                         Highcharts.numberFormat(line[1], 2) +
                         (line[0] === hoverVotes ? '</b>' : '') +
                         '<br/>';
